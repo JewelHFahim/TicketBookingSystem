@@ -81,3 +81,42 @@ INSERT INTO Bookings (booking_id, user_id, match_id, seat_number, payment_status
 (503, 2, 101, 'A-13', 'Confirmed', 150.00),
 (504, 2, 101, NULL, NULL, 150.00),
 (505, 3, 102, 'C-20', 'Pending', 120.00);
+
+
+-- =========================================================================
+-- Query 1: Answer
+select match_id, fixture, base_ticket_price from matches where tournament_category = 'Champions League' and match_status = 'Available';
+-- =========================================================================
+-- Query 2: Answer
+select user_id, full_name, email from users where full_name like 'Tanvir%' or full_name Ilike '%Haque%' ;
+-- =========================================================================
+-- Query 3: Answer
+select
+  booking_id,
+  user_id,
+  match_id,
+  coalesce(payment_status, 'Action Required') as systematic_status
+from
+  bookings
+where
+  payment_status isnull;
+-- =========================================================================
+-- Query 4: Answer
+select
+  booking_id,
+  full_name,
+  fixture,
+  total_cost
+from
+  bookings as b
+  join users as u on b.user_id = u.user_id
+  join matches as m on b.match_id = m.match_id;
+-- =========================================================================
+-- Query 5: Answer
+select u.user_id, u.full_name, b.booking_id from users as u left join bookings as b on u.user_id = b.user_id;
+-- =========================================================================
+-- Query 6: Answer
+select booking_id, match_id, total_cost from bookings where total_cost > (select avg(total_cost) from bookings);
+-- =========================================================================
+-- Query 7: Answer
+select * from matches order by base_ticket_price desc limit 2 offset 1;
